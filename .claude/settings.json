@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ng serve --proxy-config proxy.conf.json)",
+      "Read(//home/aristide/Bureau/Projets/**)",
+      "Bash(git init)",
+      "Bash(git add .)",
+      "Bash(git commit -m \"Initial commit — RecruiterSaaS Frontend \\(Angular\\)\")"
+    ],
+    "additionalDirectories": [
+      "/home/aristide/Bureau/Projets/RecruiterSAS/src/main/java/com/recruitersaas/service/impl",
+      "/home/aristide/Bureau/Projets/RecruiterSAS"
+    ]
+  }
+}

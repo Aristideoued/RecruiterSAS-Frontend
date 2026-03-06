@@ -1,0 +1,72 @@
+<div *ngIf="loading" style="display:flex;justify-content:center;align-items:center;height:60vh">
+  <mat-spinner diameter="56"></mat-spinner>
+</div>
+
+<div *ngIf="!loading && !recruiter" style="text-align:center;padding:4rem 1rem">
+  <mat-icon style="font-size:4rem;width:4rem;height:4rem;color:#d1d5db">business_off</mat-icon>
+  <h2 style="color:#374151">Page introuvable</h2>
+  <p style="color:#6b7280">Cette page recruteur n'existe pas ou n'est plus disponible.</p>
+</div>
+
+<ng-container *ngIf="!loading && recruiter">
+
+  <!-- Hero -->
+  <div class="public-hero">
+    <div class="hero-inner">
+      <div class="company-avatar">{{ recruiter.companyName[0] }}</div>
+      <div>
+        <h1 class="company-name">{{ recruiter.companyName }}</h1>
+        <div class="company-meta">
+          <span *ngIf="recruiter.address"><mat-icon>location_on</mat-icon> {{ recruiter.address }}</span>
+          <span *ngIf="recruiter.companyWebsite">
+            <mat-icon>language</mat-icon>
+            <a [href]="recruiter.companyWebsite" target="_blank" style="color:#c7d2fe">{{ recruiter.companyWebsite }}</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offres -->
+  <div class="public-content">
+    <h2 class="section-title">
+      <mat-icon>work</mat-icon>
+      {{ offers.length }} offre{{ offers.length > 1 ? 's' : '' }} disponible{{ offers.length > 1 ? 's' : '' }}
+    </h2>
+
+    <div *ngIf="offers.length === 0" style="text-align:center;padding:3rem;color:#9ca3af">
+      <mat-icon style="font-size:3rem;width:3rem;height:3rem">work_off</mat-icon>
+      <p>Aucune offre publiée pour le moment</p>
+    </div>
+
+    <div class="offer-cards">
+      <div class="offer-card" *ngFor="let o of offers">
+        <div class="offer-header">
+          <div>
+            <div class="offer-title">{{ o.title }}</div>
+            <div class="offer-meta">
+              <span><mat-icon>location_on</mat-icon>{{ o.location }}</span>
+              <span><mat-icon>work</mat-icon>{{ o.contractType }}</span>
+              <span><mat-icon>laptop_mac</mat-icon>{{ o.workMode }}</span>
+              <span *ngIf="o.salaryRange"><mat-icon>euro</mat-icon>{{ o.salaryRange }}</span>
+            </div>
+          </div>
+          <span class="offer-badge">{{ o.experienceLevel }}</span>
+        </div>
+
+        <p class="offer-desc">{{ o.description | slice:0:200 }}{{ (o.description?.length ?? 0) > 200 ? '...' : '' }}</p>
+
+        <div class="offer-footer">
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <span class="chip">{{ o.category }}</span>
+            <span class="chip" *ngIf="o.closingDate">Jusqu'au {{ o.closingDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <a mat-flat-button color="primary" [routerLink]="['/p', slug, 'apply', o.id]">
+            <mat-icon>send</mat-icon> Postuler
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>

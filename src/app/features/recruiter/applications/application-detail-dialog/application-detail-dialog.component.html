@@ -1,0 +1,118 @@
+<h2 mat-dialog-title style="display:flex;align-items:center;gap:.5rem">
+  <mat-icon style="color:#6366f1">person</mat-icon>
+  {{ app.candidateFirstName }} {{ app.candidateLastName }}
+</h2>
+
+<mat-dialog-content style="min-width:580px;max-width:700px">
+
+  <!-- Infos candidat -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+    <div class="info-block">
+      <div class="info-label">Email</div>
+      <div class="info-value">{{ app.candidateEmail }}</div>
+    </div>
+    <div class="info-block" *ngIf="app.candidatePhone">
+      <div class="info-label">Téléphone</div>
+      <div class="info-value">{{ app.candidatePhone }}</div>
+    </div>
+    <div class="info-block" *ngIf="app.candidateLinkedin">
+      <div class="info-label">LinkedIn</div>
+      <div class="info-value">
+        <a [href]="app.candidateLinkedin" target="_blank" style="color:#6366f1">{{ app.candidateLinkedin }}</a>
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Offre</div>
+      <div class="info-value" style="font-weight:600">{{ app.jobOfferTitle }}</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Soumise le</div>
+      <div class="info-value">{{ app.submittedAt | date:'dd/MM/yyyy HH:mm' }}</div>
+    </div>
+    <div class="info-block">
+      <div class="info-label">Statut actuel</div>
+      <div class="info-value">
+        <span [class]="'status-chip ' + app.status">{{ statusLabels[app.status] }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lettre de motivation -->
+  <ng-container *ngIf="app.coverLetterText">
+    <mat-divider style="margin-bottom:1rem"></mat-divider>
+    <div style="font-weight:600;color:#374151;margin-bottom:.5rem">
+      <mat-icon style="vertical-align:middle;font-size:1rem;color:#6366f1">subject</mat-icon>
+      Lettre de motivation
+    </div>
+    <div style="font-size:.875rem;color:#4b5563;line-height:1.6;white-space:pre-wrap;background:#f8fafc;padding:1rem;border-radius:8px;max-height:150px;overflow-y:auto">{{ app.coverLetterText }}</div>
+  </ng-container>
+
+  <!-- Fichiers -->
+  <ng-container *ngIf="app.files?.length">
+    <mat-divider style="margin:1rem 0"></mat-divider>
+    <div style="font-weight:600;color:#374151;margin-bottom:.75rem">
+      <mat-icon style="vertical-align:middle;font-size:1rem;color:#6366f1">folder</mat-icon>
+      Documents ({{ app.files.length }})
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.5rem">
+      <div *ngFor="let f of app.files" style="display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;background:#f8fafc;border-radius:8px;border:1px solid #e5e7eb">
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <mat-icon style="color:#6366f1">{{ fileIcon(f.fileType) }}</mat-icon>
+          <div>
+            <div style="font-weight:500;font-size:.875rem">{{ f.originalFileName }}</div>
+            <div style="font-size:.75rem;color:#9ca3af">{{ f.fileType }} · {{ formatSize(f.fileSize) }}</div>
+          </div>
+        </div>
+        <div>
+          <button mat-icon-button (click)="openFile(f)" matTooltip="Ouvrir" style="color:#6366f1">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+          <button mat-icon-button (click)="download(f)" matTooltip="Télécharger">
+            <mat-icon>download</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Formulaire de review -->
+  <mat-divider style="margin:1.5rem 0 1rem"></mat-divider>
+  <div style="font-weight:600;color:#374151;margin-bottom:1rem">Évaluation du recruteur</div>
+
+  <form [formGroup]="form" class="dialog-form" style="padding:0">
+    <div style="display:flex;gap:1rem">
+      <mat-form-field appearance="outline" style="flex:1">
+        <mat-label>Statut</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let s of statuses" [value]="s">
+            <span [class]="'status-chip ' + s" style="font-size:.75rem">{{ statusLabels[s] }}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" style="width:100px">
+        <mat-label>Note (0-5)</mat-label>
+        <input matInput type="number" min="0" max="5" formControlName="rating">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notes internes</mat-label>
+      <textarea matInput formControlName="recruiterNotes" rows="3"
+                placeholder="Vos observations sur ce candidat..."></textarea>
+    </mat-form-field>
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding:1rem 1.5rem">
+  <button mat-button mat-dialog-close>Fermer</button>
+  <button mat-flat-button color="primary" type="button" (click)="save()" [disabled]="saving">
+    <mat-icon>save</mat-icon> Enregistrer
+  </button>
+</mat-dialog-actions>
+
+<style>
+.info-block { }
+.info-label { font-size:.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem }
+.info-value { font-size:.875rem;color:#1e293b }
+</style>

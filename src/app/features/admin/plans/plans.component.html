@@ -1,0 +1,57 @@
+<div class="page-header">
+  <div>
+    <div class="page-title">Plans d'abonnement</div>
+    <div class="page-subtitle">Gérez les offres tarifaires de la plateforme</div>
+  </div>
+  <button mat-flat-button color="primary" (click)="openForm()">
+    <mat-icon>add</mat-icon> Nouveau plan
+  </button>
+</div>
+
+<!-- Cards plans -->
+<div class="plans-grid" *ngIf="!loading">
+  <div class="plan-card" *ngFor="let p of dataSource.data" [class.inactive]="!p.active">
+    <div class="plan-header">
+      <div class="plan-name">{{ p.name }}</div>
+      <span [class]="'status-chip ' + (p.active ? 'PUBLISHED' : 'CLOSED')">
+        {{ p.active ? 'Actif' : 'Inactif' }}
+      </span>
+    </div>
+    <div class="plan-price">
+      <span class="amount">{{ p.monthlyPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+      <span class="period">/mois</span>
+    </div>
+    <p class="plan-desc">{{ p.description }}</p>
+    <div class="plan-features">
+      <div class="feature-item">
+        <mat-icon>work</mat-icon>
+        <span>{{ p.maxJobOffers === -1 ? 'Offres illimitées' : p.maxJobOffers + ' offres max' }}</span>
+      </div>
+      <div class="feature-item">
+        <mat-icon>people</mat-icon>
+        <span>{{ p.maxApplicationsPerOffer === -1 ? 'Candidatures illimitées' : p.maxApplicationsPerOffer + ' candidatures/offre' }}</span>
+      </div>
+      <div class="feature-item" [class.disabled]="!p.analyticsEnabled">
+        <mat-icon>analytics</mat-icon>
+        <span>Analytics {{ p.analyticsEnabled ? 'inclus' : 'non inclus' }}</span>
+      </div>
+      <div class="feature-item" [class.disabled]="!p.customBrandingEnabled">
+        <mat-icon>palette</mat-icon>
+        <span>Branding {{ p.customBrandingEnabled ? 'personnalisé' : 'standard' }}</span>
+      </div>
+    </div>
+    <div class="plan-actions">
+      <button mat-stroked-button (click)="openForm(p)"><mat-icon>edit</mat-icon> Modifier</button>
+      <button mat-stroked-button (click)="toggle(p)" [color]="p.active ? 'warn' : 'primary'">
+        <mat-icon>{{ p.active ? 'pause' : 'play_arrow' }}</mat-icon>
+        {{ p.active ? 'Désactiver' : 'Activer' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay"><mat-spinner diameter="40"></mat-spinner></div>
+<div *ngIf="!loading && dataSource.data.length === 0" class="empty-state">
+  <mat-icon>card_membership</mat-icon>
+  <p>Aucun plan disponible</p>
+</div>

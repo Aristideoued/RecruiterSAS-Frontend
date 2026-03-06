@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>{{ data ? 'Modifier l\'offre' : 'Nouvelle offre d\'emploi' }}</h2>
+
+<mat-dialog-content class="dialog-form">
+  <form [formGroup]="form">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Titre du poste *</mat-label>
+      <input matInput formControlName="title" placeholder="ex: Développeur Full Stack Angular">
+      <mat-error>Le titre est requis</mat-error>
+    </mat-form-field>
+
+    <div class="row-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Type de contrat</mat-label>
+        <mat-select formControlName="contractType">
+          <mat-option *ngFor="let c of contractTypes" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Mode de travail</mat-label>
+        <mat-select formControlName="workMode">
+          <mat-option *ngFor="let w of workModes" [value]="w">{{ w }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Localisation</mat-label>
+        <mat-icon matPrefix style="margin-right:4px">location_on</mat-icon>
+        <input matInput formControlName="location" placeholder="Paris, Lyon...">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fourchette salariale</mat-label>
+        <input matInput formControlName="salaryRange" placeholder="40-50k€">
+      </mat-form-field>
+    </div>
+
+    <div class="row-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Niveau d'expérience</mat-label>
+        <mat-select formControlName="experienceLevel">
+          <mat-option *ngFor="let e of experienceLevels" [value]="e">{{ e }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Catégorie</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let c of categories" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description du poste *</mat-label>
+      <textarea matInput formControlName="description" rows="5"
+                placeholder="Décrivez le poste, les missions..."></textarea>
+      <mat-error>La description est requise</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Prérequis / Compétences</mat-label>
+      <textarea matInput formControlName="requirements" rows="3"
+                placeholder="Compétences requises, diplômes..."></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date limite de candidature</mat-label>
+      <input matInput type="date" formControlName="closingDate">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding:1rem 1.5rem">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid || saving">
+    <mat-icon>save</mat-icon> {{ data ? 'Mettre à jour' : 'Créer l\'offre' }}
+  </button>
+</mat-dialog-actions>

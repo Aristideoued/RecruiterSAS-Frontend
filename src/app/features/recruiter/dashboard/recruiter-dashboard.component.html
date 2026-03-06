@@ -1,0 +1,86 @@
+<div class="page-header">
+  <div>
+    <div class="page-title">Tableau de bord</div>
+    <div class="page-subtitle">Vue d'ensemble de votre activité</div>
+  </div>
+  <button mat-flat-button color="primary" routerLink="/recruiter/job-offers">
+    <mat-icon>add</mat-icon> Nouvelle offre
+  </button>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <mat-spinner diameter="48"></mat-spinner>
+</div>
+
+<ng-container *ngIf="stats && !loading">
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="icon-wrap"><mat-icon>work</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.totalJobOffers }}</div>
+        <div class="stat-label">Offres totales</div>
+      </div>
+    </div>
+    <div class="stat-card green">
+      <div class="icon-wrap"><mat-icon>public</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.publishedJobOffers }}</div>
+        <div class="stat-label">Offres publiées</div>
+      </div>
+    </div>
+    <div class="stat-card orange">
+      <div class="icon-wrap"><mat-icon>edit_note</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.draftJobOffers }}</div>
+        <div class="stat-label">Brouillons</div>
+      </div>
+    </div>
+    <div class="stat-card purple">
+      <div class="icon-wrap"><mat-icon>people_alt</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.totalApplications }}</div>
+        <div class="stat-label">Candidatures totales</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card rose">
+      <div class="icon-wrap"><mat-icon>pending</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.pendingApplications }}</div>
+        <div class="stat-label">En attente</div>
+      </div>
+    </div>
+    <div class="stat-card teal">
+      <div class="icon-wrap"><mat-icon>star</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.shortlistedApplications }}</div>
+        <div class="stat-label">Présélectionnées</div>
+      </div>
+    </div>
+    <div class="stat-card indigo">
+      <div class="icon-wrap"><mat-icon>check_circle</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.hiredApplications }}</div>
+        <div class="stat-label">Recrutées</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="table-card" style="margin-top:1.5rem;padding:1.5rem">
+    <div style="font-weight:700;font-size:1rem;color:#1e293b;margin-bottom:1rem">Actions rapides</div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <button mat-stroked-button routerLink="/recruiter/job-offers">
+        <mat-icon>work</mat-icon> Gérer mes offres
+      </button>
+      <button mat-stroked-button routerLink="/recruiter/applications">
+        <mat-icon>people_alt</mat-icon> Voir les candidatures
+      </button>
+      <button mat-stroked-button routerLink="/recruiter/profile">
+        <mat-icon>business</mat-icon> Modifier mon profil
+      </button>
+    </div>
+  </div>
+</ng-container>

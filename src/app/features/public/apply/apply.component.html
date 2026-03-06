@@ -1,0 +1,156 @@
+<!-- Chargement -->
+<div *ngIf="loading" style="display:flex;justify-content:center;align-items:center;height:60vh">
+  <mat-spinner diameter="56"></mat-spinner>
+</div>
+
+<!-- Offre introuvable -->
+<div *ngIf="!loading && !offer" style="text-align:center;padding:4rem 1rem">
+  <mat-icon style="font-size:4rem;width:4rem;height:4rem;color:#d1d5db">search_off</mat-icon>
+  <h2 style="color:#374151">Offre introuvable</h2>
+  <a mat-flat-button color="primary" [routerLink]="['/p', slug]">Retour aux offres</a>
+</div>
+
+<!-- Confirmation -->
+<div *ngIf="submitted" class="success-container">
+  <div class="success-card">
+    <div class="success-icon"><mat-icon>check_circle</mat-icon></div>
+    <h2>Candidature envoyée !</h2>
+    <p>Votre candidature pour <strong>{{ offer?.title }}</strong> a bien été reçue. Le recruteur vous contactera prochainement.</p>
+    <a mat-flat-button color="primary" [routerLink]="['/p', slug]">Voir d'autres offres</a>
+  </div>
+</div>
+
+<!-- Formulaire -->
+<ng-container *ngIf="!loading && offer && !submitted">
+
+  <!-- Header -->
+  <div class="apply-hero">
+    <div class="apply-hero-inner">
+      <a [routerLink]="['/p', slug]" style="color:#c7d2fe;display:flex;align-items:center;gap:.25rem;text-decoration:none;font-size:.875rem;margin-bottom:1rem">
+        <mat-icon style="font-size:1rem;width:1rem;height:1rem">arrow_back</mat-icon>
+        Retour aux offres
+      </a>
+      <div class="apply-company">{{ offer.recruiterCompanyName }}</div>
+      <h1 class="apply-title">{{ offer.title }}</h1>
+      <div class="apply-meta">
+        <span *ngIf="offer.location"><mat-icon>location_on</mat-icon>{{ offer.location }}</span>
+        <span><mat-icon>work</mat-icon>{{ offer.contractType }}</span>
+        <span><mat-icon>laptop_mac</mat-icon>{{ offer.workMode }}</span>
+        <span *ngIf="offer.salaryRange"><mat-icon>euro</mat-icon>{{ offer.salaryRange }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="apply-body">
+    <div class="apply-layout">
+
+      <!-- Colonne gauche: description -->
+      <div class="offer-info-col">
+        <div class="info-section">
+          <h3>Description du poste</h3>
+          <p style="white-space:pre-wrap;line-height:1.7;color:#374151">{{ offer.description }}</p>
+        </div>
+        <div class="info-section" *ngIf="offer.requirements">
+          <h3>Prérequis</h3>
+          <p style="white-space:pre-wrap;line-height:1.7;color:#374151">{{ offer.requirements }}</p>
+        </div>
+        <div class="info-tags">
+          <span class="tag"><mat-icon>school</mat-icon>{{ offer.experienceLevel }}</span>
+          <span class="tag"><mat-icon>category</mat-icon>{{ offer.category }}</span>
+          <span class="tag" *ngIf="offer.closingDate"><mat-icon>event</mat-icon>Jusqu'au {{ offer.closingDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+
+      <!-- Colonne droite: formulaire -->
+      <div class="form-col">
+        <div class="form-card">
+          <h2 style="font-size:1.25rem;font-weight:700;color:#1e293b;margin-bottom:1.5rem">
+            <mat-icon style="vertical-align:middle;color:#6366f1;margin-right:.5rem">send</mat-icon>
+            Ma candidature
+          </h2>
+
+          <form [formGroup]="form">
+
+            <div class="row-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Prénom *</mat-label>
+                <input matInput formControlName="candidateFirstName">
+                <mat-error>Requis</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Nom *</mat-label>
+                <input matInput formControlName="candidateLastName">
+                <mat-error>Requis</mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email *</mat-label>
+              <mat-icon matPrefix style="margin-right:4px">email</mat-icon>
+              <input matInput type="email" formControlName="candidateEmail">
+              <mat-error>Email valide requis</mat-error>
+            </mat-form-field>
+
+            <div class="row-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Téléphone</mat-label>
+                <mat-icon matPrefix style="margin-right:4px">phone</mat-icon>
+                <input matInput formControlName="candidatePhone">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>LinkedIn</mat-label>
+                <mat-icon matPrefix style="margin-right:4px">link</mat-icon>
+                <input matInput formControlName="candidateLinkedin" placeholder="https://linkedin.com/in/...">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Lettre de motivation</mat-label>
+              <textarea matInput formControlName="coverLetterText" rows="5"
+                        placeholder="Décrivez votre motivation et votre expérience..."></textarea>
+            </mat-form-field>
+
+            <!-- Upload fichiers -->
+            <div class="upload-zone" [class.drag-over]="dragOver"
+                 (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
+              <input type="file" #fileInput multiple accept=".pdf,.doc,.docx,.jpg,.png,.zip"
+                     style="display:none" (change)="onFileSelect($event)">
+              <mat-icon style="font-size:2rem;width:2rem;height:2rem;color:#6366f1">cloud_upload</mat-icon>
+              <div style="font-weight:600;color:#374151;margin:.5rem 0 .25rem">CV, lettre de motivation, portfolio…</div>
+              <div style="font-size:.8rem;color:#9ca3af">Glissez-déposez vos fichiers ou</div>
+              <button mat-stroked-button type="button" (click)="fileInput.click()" style="margin-top:.75rem">
+                <mat-icon>attach_file</mat-icon> Choisir des fichiers
+              </button>
+              <div style="font-size:.75rem;color:#d1d5db;margin-top:.5rem">Max {{ MAX_FILES }} fichiers · 5 MB chacun</div>
+            </div>
+
+            <!-- Liste fichiers -->
+            <div *ngIf="files.length > 0" style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem">
+              <div *ngFor="let f of files; let i = index" class="file-item">
+                <mat-icon style="color:#6366f1;font-size:1.1rem;width:1.1rem;height:1.1rem">description</mat-icon>
+                <div style="flex:1;min-width:0">
+                  <div style="font-weight:500;font-size:.875rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.name }}</div>
+                  <div style="font-size:.75rem;color:#9ca3af">{{ formatSize(f.size) }}</div>
+                </div>
+                <button mat-icon-button type="button" (click)="removeFile(i)" style="color:#ef4444;flex-shrink:0">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <button mat-flat-button color="primary" type="button" class="full-width"
+                    style="margin-top:1.5rem;height:48px;font-size:1rem"
+                    (click)="submit()" [disabled]="submitting">
+              <mat-spinner diameter="20" *ngIf="submitting" style="display:inline-block;margin-right:.5rem"></mat-spinner>
+              <mat-icon *ngIf="!submitting">send</mat-icon>
+              {{ submitting ? 'Envoi en cours...' : 'Envoyer ma candidature' }}
+            </button>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</ng-container>

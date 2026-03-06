@@ -1,0 +1,111 @@
+<div class="page-header">
+  <div>
+    <div class="page-title">Mon profil entreprise</div>
+    <div class="page-subtitle">Informations visibles par les candidats</div>
+  </div>
+</div>
+
+<div *ngIf="loading" style="display:flex;justify-content:center;padding:3rem">
+  <mat-spinner diameter="48"></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading && recruiter">
+
+  <!-- Page publique -->
+  <div class="table-card" style="margin-bottom:1.5rem;padding:1.25rem 1.5rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
+      <div>
+        <div style="font-weight:600;color:#374151">Votre page publique de recrutement</div>
+        <div style="font-size:.875rem;color:#6b7280;margin-top:.25rem">{{ publicUrl }}</div>
+      </div>
+      <div style="display:flex;gap:.75rem">
+        <button mat-stroked-button (click)="copySlug()">
+          <mat-icon>content_copy</mat-icon> Copier le lien
+        </button>
+        <a mat-flat-button color="primary" [href]="publicUrl" target="_blank">
+          <mat-icon>open_in_new</mat-icon> Voir la page
+        </a>
+      </div>
+    </div>
+    <!-- Abonnement -->
+    <mat-divider style="margin:1rem 0"></mat-divider>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      <div>
+        <div style="font-size:.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em">Plan</div>
+        <div style="font-weight:600;color:#1e293b">{{ recruiter.subscription?.plan?.name || '—' }}</div>
+      </div>
+      <div>
+        <div style="font-size:.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em">Statut</div>
+        <span [class]="'status-chip ' + (recruiter.subscription?.status || 'CLOSED')">
+          {{ recruiter.subscription?.status || 'Aucun' }}
+        </span>
+      </div>
+      <div *ngIf="recruiter.subscription?.nextBillingDate">
+        <div style="font-size:.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em">Prochain paiement</div>
+        <div style="font-weight:500;color:#1e293b">{{ recruiter.subscription.nextBillingDate | date:'dd/MM/yyyy' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire profil -->
+  <div class="table-card" style="padding:1.5rem">
+    <div style="font-weight:700;font-size:1rem;color:#1e293b;margin-bottom:1.5rem">Informations du compte</div>
+
+    <form [formGroup]="form" class="dialog-form" style="padding:0;max-width:680px">
+
+      <div class="row-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom *</mat-label>
+          <input matInput formControlName="firstName">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nom *</mat-label>
+          <input matInput formControlName="lastName">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email *</mat-label>
+        <mat-icon matPrefix style="margin-right:4px">email</mat-icon>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nom de l'entreprise *</mat-label>
+        <mat-icon matPrefix style="margin-right:4px">business</mat-icon>
+        <input matInput formControlName="companyName">
+      </mat-form-field>
+
+      <div class="row-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Site web</mat-label>
+          <mat-icon matPrefix style="margin-right:4px">language</mat-icon>
+          <input matInput formControlName="companyWebsite" placeholder="https://...">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Téléphone</mat-label>
+          <mat-icon matPrefix style="margin-right:4px">phone</mat-icon>
+          <input matInput formControlName="phone">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Adresse</mat-label>
+        <mat-icon matPrefix style="margin-right:4px">location_on</mat-icon>
+        <input matInput formControlName="address">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>SIRET</mat-label>
+        <input matInput formControlName="siret" placeholder="12345678901234">
+      </mat-form-field>
+
+      <div style="display:flex;justify-content:flex-end;padding-top:.5rem">
+        <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid || saving">
+          <mat-icon>save</mat-icon> Enregistrer les modifications
+        </button>
+      </div>
+
+    </form>
+  </div>
+</ng-container>

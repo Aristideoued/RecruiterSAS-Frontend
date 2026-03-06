@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier le plan' : 'Nouveau plan' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Nom du plan</mat-label>
+        <input matInput formControlName="name" placeholder="Starter, Pro, Enterprise...">
+        <mat-error>Obligatoire</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Prix mensuel (€)</mat-label>
+        <mat-icon matPrefix>euro</mat-icon>
+        <input matInput type="number" formControlName="monthlyPrice" min="0">
+        <mat-error>Prix invalide</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="2"></textarea>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Offres max (-1 = illimité)</mat-label>
+        <mat-icon matPrefix>work</mat-icon>
+        <input matInput type="number" formControlName="maxJobOffers">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Candidatures/offre (-1 = illimité)</mat-label>
+        <mat-icon matPrefix>people</mat-icon>
+        <input matInput type="number" formControlName="maxApplicationsPerOffer">
+      </mat-form-field>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding:8px 0">
+      <mat-checkbox formControlName="cvParsingEnabled">Parsing CV automatique</mat-checkbox>
+      <mat-checkbox formControlName="analyticsEnabled">Analytics avancées</mat-checkbox>
+      <mat-checkbox formControlName="customBrandingEnabled">Branding personnalisé</mat-checkbox>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" style="gap:10px;padding:16px 24px">
+  <button mat-stroked-button mat-dialog-close [disabled]="loading">Annuler</button>
+  <button mat-flat-button color="primary" (click)="submit()" [disabled]="loading">
+    <mat-spinner diameter="18" *ngIf="loading" style="margin-right:8px"></mat-spinner>
+    {{ isEdit ? 'Enregistrer' : 'Créer' }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,74 @@
+<div class="page-header">
+  <div>
+    <div class="page-title">Dashboard</div>
+    <div class="page-subtitle">Vue d'ensemble de la plateforme</div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <mat-spinner diameter="48"></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loading && stats">
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="icon-wrap"><mat-icon>people</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.totalRecruiters }}</div>
+        <div class="stat-label">Total recruteurs</div>
+      </div>
+    </div>
+    <div class="stat-card green">
+      <div class="icon-wrap"><mat-icon>how_to_reg</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.activeRecruiters }}</div>
+        <div class="stat-label">Recruteurs actifs</div>
+      </div>
+    </div>
+    <div class="stat-card orange">
+      <div class="icon-wrap"><mat-icon>card_membership</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.activeSubscriptions }}</div>
+        <div class="stat-label">Abonnements actifs</div>
+      </div>
+    </div>
+    <div class="stat-card purple">
+      <div class="icon-wrap"><mat-icon>layers</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.totalPlans }}</div>
+        <div class="stat-label">Plans disponibles</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card indigo">
+      <div class="icon-wrap"><mat-icon>work</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.publishedJobOffers }}</div>
+        <div class="stat-label">Offres publiées</div>
+      </div>
+    </div>
+    <div class="stat-card teal">
+      <div class="icon-wrap"><mat-icon>folder_special</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.totalApplications }}</div>
+        <div class="stat-label">Total candidatures</div>
+      </div>
+    </div>
+    <div class="stat-card rose">
+      <div class="icon-wrap"><mat-icon>person_off</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.suspendedRecruiters }}</div>
+        <div class="stat-label">Recruteurs suspendus</div>
+      </div>
+    </div>
+    <div class="stat-card orange">
+      <div class="icon-wrap"><mat-icon>pending</mat-icon></div>
+      <div>
+        <div class="stat-value">{{ stats.pendingApplications }}</div>
+        <div class="stat-label">Candidatures en attente</div>
+      </div>
+    </div>
+  </div>
+</ng-container>

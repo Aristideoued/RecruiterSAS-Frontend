@@ -1,0 +1,83 @@
+<div class="login-page">
+  <!-- Left panel -->
+  <div class="left-panel">
+    <div class="brand">
+      <mat-icon class="brand-icon">work_outline</mat-icon>
+      <h1>RecruiterSaaS</h1>
+      <p>La plateforme qui connecte les recruteurs aux meilleurs talents</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <mat-icon>dashboard_customize</mat-icon>
+        <span>Espace administration complet</span>
+      </div>
+      <div class="feature">
+        <mat-icon>description</mat-icon>
+        <span>Gestion des candidatures & CVs</span>
+      </div>
+      <div class="feature">
+        <mat-icon>analytics</mat-icon>
+        <span>Statistiques en temps réel</span>
+      </div>
+      <div class="feature">
+        <mat-icon>public</mat-icon>
+        <span>Page publique personnalisée</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel (form) -->
+  <div class="right-panel">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <div class="card-header">
+          <div class="logo-circle">
+            <mat-icon>lock_outline</mat-icon>
+          </div>
+          <h2>Connexion</h2>
+          <p>Accédez à votre espace</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput type="email" formControlName="email" placeholder="votre@email.com" autocomplete="email">
+            <mat-error *ngIf="form.get('email')?.hasError('required')">Email obligatoire</mat-error>
+            <mat-error *ngIf="form.get('email')?.hasError('email')">Format invalide</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Mot de passe</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password">
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="form.get('password')?.hasError('required')">Mot de passe obligatoire</mat-error>
+          </mat-form-field>
+
+          <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-btn">
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+            <mat-icon *ngIf="!loading">login</mat-icon>
+            {{ loading ? 'Connexion...' : 'Se connecter' }}
+          </button>
+        </form>
+
+        <div class="demo-credentials">
+          <p class="demo-title">Comptes de démonstration</p>
+          <div class="demo-item">
+            <mat-icon>admin_panel_settings</mat-icon>
+            <span><strong>Super Admin:</strong> admin&#64;recruitersaas.com / Admin&#64;1234</span>
+          </div>
+          <div class="demo-item">
+            <mat-icon>person</mat-icon>
+            <span><strong>Recruteur:</strong> recruteur&#64;demo.com / Recruiter&#64;1234</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

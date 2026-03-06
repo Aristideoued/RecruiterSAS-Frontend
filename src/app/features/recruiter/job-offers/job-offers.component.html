@@ -1,0 +1,104 @@
+<div class="page-header">
+  <div>
+    <div class="page-title">Mes offres d'emploi</div>
+    <div class="page-subtitle">Gérez et publiez vos offres</div>
+  </div>
+  <div style="display:flex;gap:1rem;align-items:center">
+    <mat-form-field appearance="outline" style="width:160px;margin:0">
+      <mat-label>Statut</mat-label>
+      <mat-select [(ngModel)]="statusFilter" (ngModelChange)="page=0; load()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="DRAFT">Brouillon</mat-option>
+        <mat-option value="PUBLISHED">Publiée</mat-option>
+        <mat-option value="CLOSED">Fermée</mat-option>
+        <mat-option value="ARCHIVED">Archivée</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="openForm()">
+      <mat-icon>add</mat-icon> Nouvelle offre
+    </button>
+  </div>
+</div>
+
+<div class="table-card">
+  <div *ngIf="loading" class="loading-overlay"><mat-spinner diameter="40"></mat-spinner></div>
+
+  <div *ngIf="!loading && dataSource.data.length === 0" class="empty-state">
+    <mat-icon>work_off</mat-icon>
+    <p>Aucune offre pour le moment</p>
+    <button mat-flat-button color="primary" (click)="openForm()">Créer ma première offre</button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" *ngIf="!loading && dataSource.data.length > 0">
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Offre</th>
+      <td mat-cell *matCellDef="let o">
+        <div style="font-weight:600">{{ o.title }}</div>
+        <div style="font-size:.8rem;color:#6b7280">{{ o.location }} · {{ o.contractType }} · {{ o.workMode }}</div>
+        <div style="font-size:.75rem;color:#94a3b8">{{ o.experienceLevel }} — {{ o.category }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td mat-cell *matCellDef="let o">
+        <span [class]="'status-chip ' + o.status">{{ o.status }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="applications">
+      <th mat-header-cell *matHeaderCellDef>Candidatures</th>
+      <td mat-cell *matCellDef="let o" style="text-align:center">
+        <a [routerLink]="['/recruiter/job-offers', o.id, 'applications']"
+           style="font-size:1.2rem;font-weight:700;color:#6366f1;text-decoration:none">
+          {{ o.applicationCount }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dates">
+      <th mat-header-cell *matHeaderCellDef>Dates</th>
+      <td mat-cell *matCellDef="let o" style="font-size:.8rem;color:#6b7280">
+        <div>Créée: {{ o.createdAt | date:'dd/MM/yyyy' }}</div>
+        <div *ngIf="o.closingDate">Limite: {{ o.closingDate | date:'dd/MM/yyyy' }}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let o">
+        <button mat-icon-button class="action-btn edit" (click)="openForm(o)" matTooltip="Modifier">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Plus d'actions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngIf="o.status === 'DRAFT'" (click)="publish(o)">
+            <mat-icon style="color:#10b981">publish</mat-icon> Publier
+          </button>
+          <button mat-menu-item *ngIf="o.status === 'PUBLISHED'" (click)="close(o)">
+            <mat-icon style="color:#f59e0b">pause_circle</mat-icon> Fermer
+          </button>
+          <button mat-menu-item *ngIf="o.status !== 'ARCHIVED'" (click)="archive(o)">
+            <mat-icon style="color:#6b7280">inventory_2</mat-icon> Archiver
+          </button>
+          <a mat-menu-item [routerLink]="['/recruiter/job-offers', o.id, 'applications']">
+            <mat-icon style="color:#6366f1">people_alt</mat-icon> Voir les candidatures
+          </a>
+          <button mat-menu-item (click)="delete(o)">
+            <mat-icon style="color:#ef4444">delete</mat-icon> Supprimer
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  </table>
+
+  <mat-paginator [length]="total" [pageSize]="size" [pageSizeOptions]="[5,10,25]"
+                 (page)="onPage($event)" *ngIf="!loading && total > 0">
+  </mat-paginator>
+</div>

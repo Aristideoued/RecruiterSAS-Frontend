@@ -1,0 +1,64 @@
+<mat-sidenav-container class="layout-container">
+
+  <mat-sidenav mode="side" opened class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo">
+        <mat-icon>business_center</mat-icon>
+      </div>
+      <div>
+        <div class="brand-name">RecruiterSaaS</div>
+        <div class="brand-role">Espace Recruteur</div>
+      </div>
+    </div>
+
+    <nav class="nav-list">
+      <a *ngFor="let item of navItems"
+         [routerLink]="item.route"
+         routerLinkActive="active"
+         class="nav-item">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <mat-divider></mat-divider>
+      <div class="user-card">
+        <div class="user-avatar">{{ initials }}</div>
+        <div class="user-info">
+          <span class="user-name">{{ auth.currentUser?.firstName }} {{ auth.currentUser?.lastName }}</span>
+          <span class="user-email">{{ auth.currentUser?.email }}</span>
+        </div>
+        <button mat-icon-button (click)="logout()" matTooltip="Se déconnecter" class="logout-btn">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <mat-toolbar class="top-toolbar">
+      <span class="toolbar-title">Espace Recruteur</span>
+      <span class="spacer"></span>
+      <div class="user-pill" [matMenuTriggerFor]="userMenu">
+        <div class="avatar-sm">{{ initials }}</div>
+        <span>{{ auth.currentUser?.firstName }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </div>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item [routerLink]="'/recruiter/profile'">
+          <mat-icon>person</mat-icon> Mon profil
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon> Se déconnecter
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
