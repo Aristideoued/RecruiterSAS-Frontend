@@ -18,8 +18,8 @@
       </span>
     </div>
     <div class="plan-price">
-      <span class="amount">{{ p.monthlyPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
-      <span class="period">/mois</span>
+      <span class="amount">{{ p.monthlyPrice | number:'1.0-0' }}</span>
+      <span class="period"> FCFA/mois</span>
     </div>
     <p class="plan-desc">{{ p.description }}</p>
     <div class="plan-features">
@@ -30,6 +30,10 @@
       <div class="feature-item">
         <mat-icon>people</mat-icon>
         <span>{{ p.maxApplicationsPerOffer === -1 ? 'Candidatures illimitées' : p.maxApplicationsPerOffer + ' candidatures/offre' }}</span>
+      </div>
+      <div class="feature-item" [class.disabled]="!p.cvParsingEnabled">
+        <mat-icon>auto_awesome</mat-icon>
+        <span>Traitement auto candidatures {{ p.cvParsingEnabled ? 'inclus' : 'non inclus' }}</span>
       </div>
       <div class="feature-item" [class.disabled]="!p.analyticsEnabled">
         <mat-icon>analytics</mat-icon>

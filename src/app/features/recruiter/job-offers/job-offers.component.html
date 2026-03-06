@@ -84,6 +84,9 @@
           <button mat-menu-item *ngIf="o.status !== 'ARCHIVED'" (click)="archive(o)">
             <mat-icon style="color:#6b7280">inventory_2</mat-icon> Archiver
           </button>
+          <button mat-menu-item *ngIf="o.status === 'ARCHIVED'" (click)="unarchive(o)">
+            <mat-icon style="color:#10b981">unarchive</mat-icon> Désarchiver
+          </button>
           <a mat-menu-item [routerLink]="['/recruiter/job-offers', o.id, 'applications']">
             <mat-icon style="color:#6366f1">people_alt</mat-icon> Voir les candidatures
           </a>

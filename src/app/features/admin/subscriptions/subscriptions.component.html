@@ -57,7 +57,7 @@
         </ng-container>
         <ng-template #statusView>
           <span [class]="'status-chip ' + (r.subscription?.status || 'CLOSED')">
-            {{ r.subscription?.status || 'Aucun' }}
+            {{ statusLabel(r.subscription?.status) }}
           </span>
         </ng-template>
       </td>

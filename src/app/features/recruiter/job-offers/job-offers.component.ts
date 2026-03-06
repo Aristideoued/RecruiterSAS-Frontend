@@ -70,6 +70,10 @@ export class JobOffersComponent implements OnInit {
     this.svc.archive(o.id).subscribe({ next: () => { this.load(); this.notify.info('Offre archivée'); }, error: () => this.notify.error('Erreur') });
   }
 
+  unarchive(o: JobOffer): void {
+    this.svc.unarchive(o.id).subscribe({ next: () => { this.load(); this.notify.success('Offre désarchivée (brouillon)'); }, error: () => this.notify.error('Erreur') });
+  }
+
   delete(o: JobOffer): void {
     this.dialog.open(ConfirmDialogComponent, {
       data: { title: 'Supprimer l\'offre', message: `Supprimer "${o.title}" ?`, confirmLabel: 'Supprimer', confirmColor: 'warn' }

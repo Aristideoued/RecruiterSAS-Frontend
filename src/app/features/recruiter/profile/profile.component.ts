@@ -63,6 +63,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  readonly statusLabels: Record<string, string> = {
+    TRIAL:     'Période d\'essai',
+    ACTIVE:    'Actif',
+    SUSPENDED: 'Suspendu',
+    CANCELLED: 'Résilié',
+    EXPIRED:   'Expiré',
+  };
+
+  statusLabel(status: string | undefined): string {
+    return status ? (this.statusLabels[status] ?? status) : 'Aucun';
+  }
+
   get publicUrl(): string {
     return this.recruiter ? `${window.location.origin}/p/${this.recruiter.slug}` : '';
   }

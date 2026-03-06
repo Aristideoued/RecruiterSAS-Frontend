@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { ApplicationService } from '../../../core/services/application.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { RecruiterService } from '../../../core/services/recruiter.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ApplicationDetailDialogComponent } from './application-detail-dialog/application-detail-dialog.component';
 import { JobApplication, ApplicationStatus } from '../../../core/models';
@@ -38,16 +39,21 @@ export class ApplicationsComponent implements OnInit {
   size = 20;
   statusFilter: ApplicationStatus | '' = '';
   offerId: string | null = null;
+  cvParsingEnabled = false;
 
   constructor(
     private svc: ApplicationService,
     private dialog: MatDialog,
     private notify: NotificationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private recruiterSvc: RecruiterService
   ) {}
 
   ngOnInit(): void {
     this.offerId = this.route.snapshot.paramMap.get('id');
+    this.recruiterSvc.getMyProfile().subscribe({
+      next: r => this.cvParsingEnabled = r.subscription?.plan?.cvParsingEnabled ?? false
+    });
     this.load();
   }
 
@@ -63,7 +69,7 @@ export class ApplicationsComponent implements OnInit {
   }
 
   openDetail(app: JobApplication): void {
-    this.dialog.open(ApplicationDetailDialogComponent, { width: '740px', data: app })
+    this.dialog.open(ApplicationDetailDialogComponent, { width: '740px', data: { app, cvParsingEnabled: this.cvParsingEnabled } })
       .afterClosed().subscribe(updated => { if (updated) this.load(); });
   }
 

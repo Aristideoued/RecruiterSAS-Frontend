@@ -36,6 +36,10 @@ export class ApplicationService {
     return this.http.delete<void>(`${this.base}/recruiter/applications/${id}`);
   }
 
+  triggerScoring(id: string): Observable<void> {
+    return this.http.post<void>(`${this.base}/recruiter/applications/${id}/score`, {});
+  }
+
   // Admin — toutes les candidatures
   getAdminAll(page = 0, size = 20): Observable<PageResponse<JobApplication>> {
     return this.http.get<PageResponse<JobApplication>>(`${this.base}/admin/applications`, { params: { page, size } });

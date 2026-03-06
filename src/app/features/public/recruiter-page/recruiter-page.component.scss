@@ -49,6 +49,22 @@
   padding: 2rem 1.5rem;
 }
 
+.offers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-field {
+  width: 320px;
+  max-width: 100%;
+
+  .mat-mdc-form-field-subscript-wrapper { display: none; }
+}
+
 .section-title {
   display: flex;
   align-items: center;
@@ -56,7 +72,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 1.5rem;
+  margin: 0;
 
   mat-icon { color: #6366f1; }
 }

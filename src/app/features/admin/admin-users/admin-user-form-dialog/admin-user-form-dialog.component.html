@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier l\'administrateur' : 'Nouvel administrateur' }}</h2>
+
+<mat-dialog-content style="min-width:460px">
+  <form [formGroup]="form" class="dialog-form">
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom *</mat-label>
+        <input matInput formControlName="firstName">
+        <mat-error>Obligatoire</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom *</mat-label>
+        <input matInput formControlName="lastName">
+        <mat-error>Obligatoire</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email *</mat-label>
+      <mat-icon matPrefix style="margin-right:4px">email</mat-icon>
+      <input matInput formControlName="email" type="email">
+      <mat-error>Email invalide</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ isEdit ? 'Nouveau mot de passe (laisser vide pour ne pas changer)' : 'Mot de passe *' }}</mat-label>
+      <mat-icon matPrefix style="margin-right:4px">lock</mat-icon>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+      <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error>Minimum 8 caractères</mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="gap:10px;padding:16px 24px">
+  <button mat-stroked-button mat-dialog-close [disabled]="loading">Annuler</button>
+  <button mat-flat-button color="primary" (click)="submit()" [disabled]="loading">
+    <mat-spinner diameter="18" *ngIf="loading" style="margin-right:8px"></mat-spinner>
+    <mat-icon *ngIf="!loading">save</mat-icon>
+    {{ isEdit ? 'Enregistrer' : 'Créer' }}
+  </button>
+</mat-dialog-actions>

@@ -5,7 +5,11 @@
       "Read(//home/aristide/Bureau/Projets/**)",
       "Bash(git init)",
       "Bash(git add .)",
-      "Bash(git commit -m \"Initial commit — RecruiterSaaS Frontend \\(Angular\\)\")"
+      "Bash(git commit -m \"Initial commit — RecruiterSaaS Frontend \\(Angular\\)\")",
+      "Bash(ssh -T git@github.com)",
+      "Bash(git remote add origin git@github.com:Aristideoued/RecruiterSAS-Frontend.git)",
+      "Bash(git branch -M main)",
+      "Bash(git push -u origin main)"
     ],
     "additionalDirectories": [
       "/home/aristide/Bureau/Projets/RecruiterSAS/src/main/java/com/recruitersaas/service/impl",

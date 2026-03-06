@@ -35,6 +35,18 @@ export class RecruitersComponent implements OnInit {
   loading = true;
   page = 0; size = 20;
 
+  readonly subscriptionStatusLabels: Record<string, string> = {
+    TRIAL:     'Période d\'essai',
+    ACTIVE:    'Actif',
+    SUSPENDED: 'Suspendu',
+    CANCELLED: 'Résilié',
+    EXPIRED:   'Expiré',
+  };
+
+  subStatusLabel(status: string): string {
+    return this.subscriptionStatusLabels[status] ?? status;
+  }
+
   constructor(private svc: RecruiterService, private dialog: MatDialog, private notify: NotificationService) {}
 
   ngOnInit(): void { this.load(); }

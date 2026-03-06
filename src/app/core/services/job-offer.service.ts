@@ -38,6 +38,9 @@ export class JobOfferService {
   archive(id: string): Observable<void> {
     return this.http.patch<void>(`${this.recruiterUrl}/${id}/archive`, {});
   }
+  unarchive(id: string): Observable<void> {
+    return this.http.patch<void>(`${this.recruiterUrl}/${id}/unarchive`, {});
+  }
 
   // Public
   getPublicOffers(slug: string, page = 0, size = 10): Observable<PageResponse<JobOffer>> {

@@ -25,7 +25,12 @@ export class JobOfferFormDialogComponent implements OnInit {
 
   contractTypes = ['CDI', 'CDD', 'Stage', 'Alternance', 'Freelance', 'Intérim'];
   workModes = ['Présentiel', 'Télétravail', 'Hybride'];
-  experienceLevels = ['Junior', 'Confirmé', 'Senior', 'Expert'];
+  experienceLevels = [
+    { value: 'Junior',   label: 'Junior (0-2 ans)' },
+    { value: 'Confirmé', label: 'Confirmé (3-5 ans)' },
+    { value: 'Senior',   label: 'Senior (5-10 ans)' },
+    { value: 'Expert',   label: 'Expert (10+ ans)' },
+  ];
   categories = ['Tech', 'Marketing', 'Finance', 'RH', 'Commercial', 'Design', 'Opérations', 'Autre'];
 
   constructor(

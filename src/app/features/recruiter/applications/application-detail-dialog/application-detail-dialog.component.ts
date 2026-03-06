@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApplicationService } from '../../../../core/services/application.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { JobApplication, ApplicationFile, ApplicationStatus } from '../../../../core/models';
@@ -19,12 +20,15 @@ import { JobApplication, ApplicationFile, ApplicationStatus } from '../../../../
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule,
             MatInputModule, MatSelectModule, MatButtonModule, MatIconModule,
-            MatChipsModule, MatDividerModule, MatTooltipModule],
+            MatChipsModule, MatDividerModule, MatTooltipModule, MatProgressSpinnerModule],
   templateUrl: './application-detail-dialog.component.html'
 })
 export class ApplicationDetailDialogComponent {
   form: FormGroup;
   saving = false;
+  scoring = false;
+  app: JobApplication;
+  cvParsingEnabled: boolean;
   statuses: ApplicationStatus[] = ['PENDING', 'REVIEWED', 'SHORTLISTED', 'REJECTED', 'HIRED'];
   statusLabels: Record<ApplicationStatus, string> = {
     PENDING: 'En attente', REVIEWED: 'Examinée', SHORTLISTED: 'Présélectionnée',
@@ -36,12 +40,14 @@ export class ApplicationDetailDialogComponent {
     private svc: ApplicationService,
     private notify: NotificationService,
     public dialogRef: MatDialogRef<ApplicationDetailDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public app: JobApplication
+    @Inject(MAT_DIALOG_DATA) data: { app: JobApplication; cvParsingEnabled: boolean }
   ) {
+    this.app = data.app;
+    this.cvParsingEnabled = data.cvParsingEnabled;
     this.form = this.fb.group({
-      status:         [app.status],
-      recruiterNotes: [app.recruiterNotes || ''],
-      rating:         [app.rating || 0]
+      status:         [data.app.status],
+      recruiterNotes: [data.app.recruiterNotes || ''],
+      rating:         [data.app.rating || 0]
     });
   }
 
@@ -51,6 +57,14 @@ export class ApplicationDetailDialogComponent {
     this.svc.updateStatus(this.app.id, status, recruiterNotes, rating).subscribe({
       next: () => { this.dialogRef.close(true); this.notify.success('Candidature mise à jour'); },
       error: () => { this.notify.error('Erreur'); this.saving = false; }
+    });
+  }
+
+  triggerScoring(): void {
+    this.scoring = true;
+    this.svc.triggerScoring(this.app.id).subscribe({
+      next: () => { this.notify.success('Analyse lancée, résultat disponible dans quelques instants'); this.scoring = false; },
+      error: () => { this.notify.error('Erreur lors du traitement automatique'); this.scoring = false; }
     });
   }
 

@@ -104,11 +104,25 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="end" style="padding:1rem 1.5rem">
-  <button mat-button mat-dialog-close>Fermer</button>
-  <button mat-flat-button color="primary" type="button" (click)="save()" [disabled]="saving">
-    <mat-icon>save</mat-icon> Enregistrer
-  </button>
+<mat-dialog-actions style="padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+  <div>
+    <button mat-stroked-button *ngIf="cvParsingEnabled" (click)="triggerScoring()" [disabled]="scoring"
+            matTooltip="Analyser automatiquement le CV et les documents">
+      <mat-spinner diameter="16" *ngIf="scoring" style="display:inline-block;margin-right:6px"></mat-spinner>
+      <mat-icon *ngIf="!scoring">auto_awesome</mat-icon>
+      Traitement automatique
+    </button>
+    <button mat-stroked-button *ngIf="!cvParsingEnabled" disabled
+            matTooltip="Fonctionnalité non disponible avec votre plan actuel">
+      <mat-icon>lock</mat-icon> Traitement automatique
+    </button>
+  </div>
+  <div style="display:flex;gap:.5rem">
+    <button mat-button mat-dialog-close>Fermer</button>
+    <button mat-flat-button color="primary" type="button" (click)="save()" [disabled]="saving">
+      <mat-icon>save</mat-icon> Enregistrer
+    </button>
+  </div>
 </mat-dialog-actions>
 
 <style>

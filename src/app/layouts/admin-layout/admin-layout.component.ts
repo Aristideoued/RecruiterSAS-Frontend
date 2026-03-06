@@ -27,7 +27,8 @@ export class AdminLayoutComponent {
     { label: 'Plans',          icon: 'card_membership',      route: '/admin/plans' },
     { label: 'Abonnements',    icon: 'subscriptions',        route: '/admin/subscriptions' },
     { label: 'Toutes les offres', icon: 'work',             route: '/admin/job-offers' },
-    { label: 'Candidatures',   icon: 'folder_special',       route: '/admin/applications' }
+    { label: 'Candidatures',   icon: 'folder_special',       route: '/admin/applications' },
+    { label: 'Administrateurs', icon: 'admin_panel_settings', route: '/admin/admins' }
   ];
 
   constructor(public auth: AuthService) {}

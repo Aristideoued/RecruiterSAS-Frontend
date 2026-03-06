@@ -23,7 +23,8 @@ export const routes: Routes = [
       { path: 'plans',         loadComponent: () => import('./features/admin/plans/plans.component').then(m => m.PlansComponent) },
       { path: 'subscriptions', loadComponent: () => import('./features/admin/subscriptions/subscriptions.component').then(m => m.SubscriptionsComponent) },
       { path: 'job-offers',    loadComponent: () => import('./features/admin/all-offers/all-offers.component').then(m => m.AllOffersComponent) },
-      { path: 'applications',  loadComponent: () => import('./features/admin/all-applications/all-applications.component').then(m => m.AllApplicationsComponent) }
+      { path: 'applications',  loadComponent: () => import('./features/admin/all-applications/all-applications.component').then(m => m.AllApplicationsComponent) },
+      { path: 'admins',        loadComponent: () => import('./features/admin/admin-users/admin-users.component').then(m => m.AdminUsersComponent) }
     ]
   },
 

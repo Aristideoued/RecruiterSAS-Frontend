@@ -33,6 +33,18 @@ export class SubscriptionsComponent implements OnInit {
   editingId: string | null = null;
   editForm!: FormGroup;
 
+  readonly statusLabels: Record<string, string> = {
+    TRIAL:     'Période d\'essai',
+    ACTIVE:    'Actif',
+    SUSPENDED: 'Suspendu',
+    CANCELLED: 'Résilié',
+    EXPIRED:   'Expiré',
+  };
+
+  statusLabel(status: string | undefined): string {
+    return status ? (this.statusLabels[status] ?? status) : 'Aucun';
+  }
+
   constructor(
     private recruiterSvc: RecruiterService, private subSvc: SubscriptionService,
     private planSvc: PlanService, private dialog: MatDialog,

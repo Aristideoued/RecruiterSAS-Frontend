@@ -89,6 +89,18 @@ export interface JobApplicationRequest {
   candidatePhone?: string; candidateLinkedin?: string; coverLetterText?: string;
 }
 
+// ======= ADMIN USER =======
+export interface AdminUser {
+  id: string; email: string; firstName: string; lastName: string;
+  enabled: boolean; createdAt: string;
+}
+export interface CreateAdminRequest {
+  firstName: string; lastName: string; email: string; password: string;
+}
+export interface UpdateAdminRequest {
+  firstName: string; lastName: string; email: string; password?: string;
+}
+
 // ======= DASHBOARD =======
 export interface DashboardStats {
   totalJobOffers: number; publishedJobOffers: number; draftJobOffers: number;

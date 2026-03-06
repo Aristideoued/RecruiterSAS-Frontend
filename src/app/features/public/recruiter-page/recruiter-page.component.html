@@ -29,18 +29,34 @@
 
   <!-- Offres -->
   <div class="public-content">
-    <h2 class="section-title">
-      <mat-icon>work</mat-icon>
-      {{ offers.length }} offre{{ offers.length > 1 ? 's' : '' }} disponible{{ offers.length > 1 ? 's' : '' }}
-    </h2>
+    <div class="offers-header">
+      <h2 class="section-title">
+        <mat-icon>work</mat-icon>
+        {{ filteredOffers.length }} offre{{ filteredOffers.length > 1 ? 's' : '' }} disponible{{ filteredOffers.length > 1 ? 's' : '' }}
+      </h2>
+
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Rechercher une offre</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput [(ngModel)]="searchQuery" placeholder="Titre, description, type de contrat…">
+        <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Effacer" (click)="searchQuery=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
 
     <div *ngIf="offers.length === 0" style="text-align:center;padding:3rem;color:#9ca3af">
       <mat-icon style="font-size:3rem;width:3rem;height:3rem">work_off</mat-icon>
       <p>Aucune offre publiée pour le moment</p>
     </div>
 
+    <div *ngIf="offers.length > 0 && filteredOffers.length === 0" style="text-align:center;padding:3rem;color:#9ca3af">
+      <mat-icon style="font-size:3rem;width:3rem;height:3rem">search_off</mat-icon>
+      <p>Aucune offre ne correspond à votre recherche</p>
+    </div>
+
     <div class="offer-cards">
-      <div class="offer-card" *ngFor="let o of offers">
+      <div class="offer-card" *ngFor="let o of filteredOffers">
         <div class="offer-header">
           <div>
             <div class="offer-title">{{ o.title }}</div>
@@ -48,7 +64,7 @@
               <span><mat-icon>location_on</mat-icon>{{ o.location }}</span>
               <span><mat-icon>work</mat-icon>{{ o.contractType }}</span>
               <span><mat-icon>laptop_mac</mat-icon>{{ o.workMode }}</span>
-              <span *ngIf="o.salaryRange"><mat-icon>euro</mat-icon>{{ o.salaryRange }}</span>
+              <!-- <span *ngIf="o.salaryRange"><mat-icon>payments</mat-icon>{{ o.salaryRange }} FCFA</span> -->
             </div>
           </div>
           <span class="offer-badge">{{ o.experienceLevel }}</span>

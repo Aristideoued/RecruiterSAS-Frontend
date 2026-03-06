@@ -68,7 +68,7 @@
       <td mat-cell *matCellDef="let r">
         <ng-container *ngIf="r.subscription">
           <div style="font-weight:600;font-size:.85rem">{{ r.subscription.plan?.name }}</div>
-          <span [class]="'status-chip ' + r.subscription.status" style="font-size:.7rem">{{ r.subscription.status }}</span>
+          <span [class]="'status-chip ' + r.subscription.status" style="font-size:.7rem">{{ subStatusLabel(r.subscription.status) }}</span>
         </ng-container>
         <span *ngIf="!r.subscription" style="color:#9ca3af;font-size:.85rem">Aucun</span>
       </td>
